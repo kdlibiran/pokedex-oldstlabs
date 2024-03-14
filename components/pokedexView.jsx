@@ -79,7 +79,7 @@ export default function PokedexView({ data }) {
                 id={pokemon.types.split(", ")[0].toLowerCase()}
               >
                 <CardTitle className="relative text-right">
-                  #{pokemon.id}
+                  #{String(pokemon.id).padStart(3, "0")}
                 </CardTitle>
                 <CardContent className="flex flex-col items-center">
                   <Image

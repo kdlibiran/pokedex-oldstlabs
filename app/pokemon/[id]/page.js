@@ -75,7 +75,9 @@ export default function Index({ params }) {
           <Link href={`/`} className="ml-10">
             <ArrowBack />
           </Link>
-          <h1 className="mr-10 text-right text-4xl">#{info.id}</h1>
+          <h1 className="mr-10 text-right text-4xl">
+            #{String(info.id).padStart(3, "0")}
+          </h1>
         </div>
         <Image
           src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(info.id).padStart(3, "0")}.png`}
