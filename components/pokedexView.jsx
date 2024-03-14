@@ -20,7 +20,7 @@ export default function PokedexView({ data }) {
             .filter(
               (pokemon) =>
                 pokemon.name.includes(search.toLowerCase()) ||
-                pokemon.id.includes(search),
+                pokemon.padId.includes(search),
             )
             .sort((a, b) => parseInt(a.id) - parseInt(b.id))
             .slice(0, num),
@@ -37,7 +37,7 @@ export default function PokedexView({ data }) {
             .filter(
               (pokemon) =>
                 pokemon.name.includes(search.toLowerCase()) ||
-                pokemon.id.includes(search),
+                pokemon.padId.includes(search),
             )
             .sort((a, b) => a.name.localeCompare(b.name))
             .slice(0, num),

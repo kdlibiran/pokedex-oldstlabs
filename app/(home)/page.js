@@ -18,6 +18,7 @@ const fetchPokemon = async () => {
   for (const pokemon of pokemons) {
     //Get the id of the pokemon from the url
     pokemon.id = String(pokemon.url.split("/")[6]);
+    pokemon.padId = String(pokemon.id).padStart(3, "0");
     //Use the id and add some padding to get the image of the pokemon
     pokemon.image = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(pokemon.id).padStart(3, "0")}.png`;
     //Fetch the types of the pokemon
