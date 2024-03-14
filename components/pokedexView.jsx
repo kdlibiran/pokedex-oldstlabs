@@ -74,7 +74,10 @@ export default function PokedexView({ data }) {
         {pokemonArray &&
           pokemonArray.map((pokemon) => (
             <Link key={pokemon.id} href={`/pokemon/${pokemon.id}`}>
-              <Card className="p-4" id={pokemon.types.split(", ")[0]}>
+              <Card
+                className="h-full items-stretch p-4"
+                id={pokemon.types.split(", ")[0].toLowerCase()}
+              >
                 <CardTitle className="relative text-right">
                   #{pokemon.id}
                 </CardTitle>

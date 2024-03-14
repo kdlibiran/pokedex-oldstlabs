@@ -4,7 +4,9 @@ import PokedexView from "@/components/pokedexView";
 const fetchTypes = async (id) => {
   const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
   const data = await res.json();
-  return data.types.map((type) => type.type.name).join(", ");
+  return data.types
+    .map((type) => type.type.name[0].toUpperCase() + type.type.name.slice(1))
+    .join(", ");
 };
 
 //Fetch the pokemon data from the pokeapi 1 - 1010
