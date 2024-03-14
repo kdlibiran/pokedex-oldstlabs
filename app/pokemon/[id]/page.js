@@ -159,7 +159,7 @@ export default function Index({ params }) {
                   </ScrollArea>
                 </TabsContent>
                 <TabsContent value="weakness" className="h-[230px]">
-                  <h1>Weaknesses(scroll):</h1>
+                  <h1>Weaknesses (scroll):</h1>
                   <ScrollArea className="h-[170px]">
                     {info.types &&
                       info.types
@@ -180,7 +180,7 @@ export default function Index({ params }) {
                   </ScrollArea>
                 </TabsContent>
                 <TabsContent value="strongAgainst" className="h-[230px]">
-                  <h1>Strong Against(scroll):</h1>
+                  <h1>Strong Against (scroll):</h1>
                   <ScrollArea className="h-[170px]">
                     {info.types &&
                       info.types
