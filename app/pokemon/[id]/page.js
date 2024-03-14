@@ -5,6 +5,49 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
+
+const weakness = {
+  Normal: ["Rock", "Ghost", "Steel"],
+  Fighting: ["Flying", "Poison", "Psychic", "Bug", "Ghost", "Fairy"],
+  Flying: "Rock, Steel, Electric",
+  Poison: ["Poison", "Ground", "Rock", "Ghost", "Steel"],
+  Ground: ["Flying", "Bug", "Grass"],
+  Rock: ["Fighting", "Ground", "Steel"],
+  Bug: ["Fighting", "Flying", "Poison", "Ghost", "Steel", "Fire", "Fairy"],
+  Ghost: ["Normal", "Dark"],
+  Steel: ["Steel", "Fire", "Water", "Electric"],
+  Fire: ["Rock", "Fire", "Water", "Dragon"],
+  Water: ["Water", "Grass", "Dragon"],
+  Grass: ["Flying", "Poison", "Bug", "Steel", "Fire", "Grass", "Dragon"],
+  Electric: ["Ground", "Grass", "Electric", "Dragon"],
+  Psychic: ["Steel", "Psychic", "Dark"],
+  Ice: ["Steel", "Fire", "Water", "Ice"],
+  Dragon: ["Steel", "Fairy"],
+  Dark: ["Fighting", "Dark", "Fairy"],
+  Fairy: ["Poison", "Steel", "Fire"],
+};
+
+const strongAgainst = {
+  Normal: [""],
+  Fighting: ["Normal", "Rock", "Steel", "Ice", "Dark"],
+  Flying: ["Fighting", "Bug", "Grass"],
+  Poison: ["Grass", "Fairy"],
+  Ground: ["Poison", "Rock", "Steel", "Fire", "Electric"],
+  Rock: ["Flying", "Bug", "Fire", "Ice"],
+  Bug: ["Grass", "Psychic", "Dark"],
+  Ghost: ["Ghost", "Psychic"],
+  Steel: ["Rock", "Ice", "Fairy"],
+  Fire: ["Bug", "Steel", "Grass", "Ice"],
+  Water: ["Ground", "Rock", "Fire"],
+  Grass: ["Ground", "Rock", "Water"],
+  Electric: ["Flying", "Water"],
+  Psychic: ["Fighting", "Poison"],
+  Ice: ["Flying", "Ground", "Grass", "Dragon"],
+  Dragon: ["Dragon"],
+  Dark: ["Ghost", "Psychic"],
+  Fairy: ["Fighting", "Dragon", "Dark"],
+};
+
 export default function Index({ params }) {
   //setup the state for the pokemon info
   const [info, setInfo] = useState([]);
@@ -28,8 +71,11 @@ export default function Index({ params }) {
         className="flex w-full flex-col items-center  pt-10 md:w-1/2"
         id={info.types && info.types[0].type.name}
       >
-        <div className="w-full">
-          <h1 className="mr-10 text-right text-6xl">#{info.id}</h1>
+        <div className="flex w-full justify-between">
+          <Link href={`/`} className="ml-10">
+            <ArrowBack />
+          </Link>
+          <h1 className="mr-10 text-right text-4xl">#{info.id}</h1>
         </div>
         <Image
           src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(info.id).padStart(3, "0")}.png`}
@@ -39,7 +85,7 @@ export default function Index({ params }) {
         />
         <div className="flex h-[100vh] w-[100vh] flex-col items-center overflow-hidden rounded-full bg-white">
           <div className="flex w-1/3 flex-col items-center">
-            <div className="mb-12 mt-12 flex flex-row gap-4 text-6xl">
+            <div className="mb-12 mt-12 flex flex-row gap-4 text-3xl">
               {info.id > 1 && (
                 <Link href={`/pokemon/${info.id - 1}`}>
                   <ArrowBack />
@@ -112,8 +158,50 @@ export default function Index({ params }) {
                       ))}
                   </ScrollArea>
                 </TabsContent>
+                <TabsContent value="weakness" className="h-[230px]">
+                  <h1>Weaknesses(scroll):</h1>
+                  <ScrollArea className="h-[170px]">
+                    {info.types &&
+                      info.types
+                        .map(
+                          (type) =>
+                            weakness[
+                              type.type.name[0].toUpperCase() +
+                                type.type.name.slice(1)
+                            ],
+                        )
+                        .flat()
+                        .filter((v, i, a) => a.indexOf(v) === i)
+                        .map((type) => (
+                          <p key={type} className="font-bold">
+                            {type}
+                          </p>
+                        ))}
+                  </ScrollArea>
+                </TabsContent>
+                <TabsContent value="strongAgainst" className="h-[230px]">
+                  <h1>Strong Against(scroll):</h1>
+                  <ScrollArea className="h-[170px]">
+                    {info.types &&
+                      info.types
+                        .map(
+                          (type) =>
+                            strongAgainst[
+                              type.type.name[0].toUpperCase() +
+                                type.type.name.slice(1)
+                            ],
+                        )
+                        .flat()
+                        .filter((v, i, a) => a.indexOf(v) === i)
+                        .map((type) => (
+                          <p key={type} className="font-bold">
+                            {type}
+                          </p>
+                        ))}
+                  </ScrollArea>
+                </TabsContent>
                 <div className="">
-                  <TabsList className="gap-3 border bg-gray-100">
+                  <TabsList className=" border bg-gray-100">
                     <TabsTrigger
                       value="info"
                       className="data-[state=active]:bg-gray-100 data-[state=active]:shadow-lg"
@@ -131,6 +219,18 @@ export default function Index({ params }) {
                       className="data-[state=active]:bg-gray-100 data-[state=active]:shadow-lg"
                     >
                       Moves
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="weakness"
+                      className="data-[state=active]:bg-gray-100 data-[state=active]:shadow-lg"
+                    >
+                      Weakness
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="strongAgainst"
+                      className="data-[state=active]:bg-gray-100 data-[state=active]:shadow-lg"
+                    >
+                      Strong Against
                     </TabsTrigger>
                   </TabsList>
                 </div>
