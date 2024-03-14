@@ -113,16 +113,16 @@ export default function Index({ params }) {
                   </p>
                   <p>
                     Types:{" "}
-                    <span className="font-bold">
-                      {info.types &&
-                        info.types
-                          .map(
-                            (type) =>
-                              type.type.name[0].toUpperCase() +
-                              type.type.name.slice(1),
-                          )
-                          .join(", ")}
-                    </span>
+                    {info.types &&
+                      info.types.map((type) => (
+                        <span
+                          className="mr-2 rounded-lg border px-1"
+                          id={type.type.name.toLowerCase()}
+                        >
+                          {type.type.name[0].toUpperCase() +
+                            type.type.name.slice(1)}
+                        </span>
+                      ))}
                   </p>
                   <p>
                     Abilities:{" "}
@@ -175,8 +175,13 @@ export default function Index({ params }) {
                         .flat()
                         .filter((v, i, a) => a.indexOf(v) === i)
                         .map((type) => (
-                          <p key={type} className="font-bold">
-                            {type}
+                          <p key={type}>
+                            <span
+                              className="mr-2 scroll-px-2 rounded-lg border"
+                              id={type.toLowerCase()}
+                            >
+                              {type}
+                            </span>
                           </p>
                         ))}
                   </ScrollArea>
@@ -196,8 +201,13 @@ export default function Index({ params }) {
                         .flat()
                         .filter((v, i, a) => a.indexOf(v) === i)
                         .map((type) => (
-                          <p key={type} className="font-bold">
-                            {type}
+                          <p key={type}>
+                            <span
+                              className="mr-2 scroll-px-2 rounded-lg border"
+                              id={type.toLowerCase()}
+                            >
+                              {type}
+                            </span>
                           </p>
                         ))}
                   </ScrollArea>

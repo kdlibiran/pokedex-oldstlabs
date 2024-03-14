@@ -11,7 +11,7 @@ const fetchTypes = async (id) => {
 
 //Fetch the pokemon data from the pokeapi 1 - 1010
 const fetchPokemon = async () => {
-  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${1010}`);
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1010`);
   const data = await res.json();
   const pokemons = data.results;
   //For each pokemon, add the id, image and types
@@ -20,7 +20,7 @@ const fetchPokemon = async () => {
     pokemon.id = String(pokemon.url.split("/")[6]);
     pokemon.padId = String(pokemon.id).padStart(3, "0");
     //Use the id and add some padding to get the image of the pokemon
-    pokemon.image = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(pokemon.id).padStart(3, "0")}.png`;
+    pokemon.image = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemon.padId}.png`;
     //Fetch the types of the pokemon
     pokemon.types = await fetchTypes(pokemon.id);
   }

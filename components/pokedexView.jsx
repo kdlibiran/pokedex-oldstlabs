@@ -13,7 +13,9 @@ export default function PokedexView({ data }) {
 
   //useEffect so that everytime there is a change in number, search or sort, the pokemon array is updated
   useEffect(() => {
+    //if sortBy is id, sort the array by padid
     if (sortBy == "id") {
+      //if there is a search, filter the array by the search
       if (search) {
         setPokemonArray(
           data
@@ -24,13 +26,14 @@ export default function PokedexView({ data }) {
             )
             .sort((a, b) => parseInt(a.id) - parseInt(b.id))
             .slice(0, num),
-        );
+        ); //if there is no search just return the sliced array
       } else {
         setPokemonArray(
           data.sort((a, b) => parseInt(a.id) - parseInt(b.id)).slice(0, num),
         );
-      }
+      } //if sortBy is name, sort the array by name
     } else {
+      //the same as above but sorting by name
       if (search) {
         setPokemonArray(
           data
@@ -47,7 +50,7 @@ export default function PokedexView({ data }) {
           data.sort((a, b) => a.name.localeCompare(b.name)).slice(0, num),
         );
       }
-    }
+    } //if any of the dependencies change, update the pokemon array
   }, [num, search, sortBy]);
 
   return (
@@ -93,7 +96,18 @@ export default function PokedexView({ data }) {
                       {pokemon.name[0].toUpperCase() + pokemon.name.slice(1)}
                     </h1>
                     <div>
-                      <p>Type(s): {pokemon.types}</p>
+                      <p>
+                        Type(s):{" "}
+                        {pokemon.types.split(", ").map((type) => (
+                          <span
+                            key={type}
+                            className="rounded-md border px-1"
+                            id={type.toLowerCase()}
+                          >
+                            {type}{" "}
+                          </span>
+                        ))}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
