@@ -7,7 +7,7 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 const weakness = {
   Normal: ["Rock", "Ghost", "Steel"],
   Fighting: ["Flying", "Poison", "Psychic", "Bug", "Ghost", "Fairy"],
-  Flying: "Rock, Steel, Electric",
+  Flying: ["Rock, Steel, Electric"],
   Poison: ["Poison", "Ground", "Rock", "Ghost", "Steel"],
   Ground: ["Flying", "Bug", "Grass"],
   Rock: ["Fighting", "Ground", "Steel"],
