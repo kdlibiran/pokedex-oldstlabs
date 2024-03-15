@@ -7,7 +7,7 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 const weakness = {
   Normal: ["Rock", "Ghost", "Steel"],
   Fighting: ["Flying", "Poison", "Psychic", "Bug", "Ghost", "Fairy"],
-  Flying: ["Rock, Steel, Electric"],
+  Flying: ["Rock", "Steel", "Electric"],
   Poison: ["Poison", "Ground", "Rock", "Ghost", "Steel"],
   Ground: ["Flying", "Bug", "Grass"],
   Rock: ["Fighting", "Ground", "Steel"],
@@ -106,6 +106,7 @@ export default async function Index({ params }) {
                           <span
                             className="mr-2 rounded-lg border px-1"
                             id={type.type.name.toLowerCase()}
+                            key={type.type.name}
                           >
                             {type.type.name[0].toUpperCase() +
                               type.type.name.slice(1)}
@@ -179,7 +180,10 @@ export default async function Index({ params }) {
                     <div className="mt-10 flex flex-row justify-center gap-4">
                       {info.evolutions &&
                         info.evolutions.map((evo) => (
-                          <div className="flex flex-col items-center justify-center">
+                          <div
+                            className="flex flex-col items-center justify-center"
+                            key={evo.name}
+                          >
                             <Image
                               src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(evo.id).padStart(3, "0")}.png`}
                               alt={evo.name}
