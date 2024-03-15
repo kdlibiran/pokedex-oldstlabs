@@ -27,34 +27,33 @@ const weakness = {
   Fairy: ["Poison", "Steel", "Fire"],
 };
 
-const strongAgainst = {
-  Normal: [""],
-  Fighting: ["Normal", "Rock", "Steel", "Ice", "Dark"],
-  Flying: ["Fighting", "Bug", "Grass"],
-  Poison: ["Grass", "Fairy"],
-  Ground: ["Poison", "Rock", "Steel", "Fire", "Electric"],
-  Rock: ["Flying", "Bug", "Fire", "Ice"],
-  Bug: ["Grass", "Psychic", "Dark"],
-  Ghost: ["Ghost", "Psychic"],
-  Steel: ["Rock", "Ice", "Fairy"],
-  Fire: ["Bug", "Steel", "Grass", "Ice"],
-  Water: ["Ground", "Rock", "Fire"],
-  Grass: ["Ground", "Rock", "Water"],
-  Electric: ["Flying", "Water"],
-  Psychic: ["Fighting", "Poison"],
-  Ice: ["Flying", "Ground", "Grass", "Dragon"],
-  Dragon: ["Dragon"],
-  Dark: ["Ghost", "Psychic"],
-  Fairy: ["Fighting", "Dragon", "Dark"],
-};
-
 export default function Index({ params }) {
   //setup the state for the pokemon info
   const [info, setInfo] = useState([]);
-  //get the pokemon info from the api
+
+  const getEvolutions = (evol) => {
+    let evolutions = [];
+    let evo = evol.chain;
+    do {
+      evolutions.push({
+        name: evo.species.name,
+        id: evo.species.url.split("/")[6],
+      });
+      evo = evo.evolves_to[0];
+    } while (!!evo && evo.hasOwnProperty("evolves_to"));
+    return evolutions;
+  };
+
+  //get the pokemon info and the evolution info from the api
   const getPokemonInfo = async (id) => {
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await res.json();
+    const species = await fetch(data.species.url);
+    const speciesData = await species.json();
+    const evolLink = speciesData.evolution_chain.url;
+    const evol = await fetch(evolLink);
+    const evolData = await evol.json();
+    data.evolutions = getEvolutions(evolData);
     return data;
   };
 
@@ -62,6 +61,7 @@ export default function Index({ params }) {
   useEffect(() => {
     getPokemonInfo(params.id).then((data) => {
       setInfo(data);
+      console.log(data);
     });
   }, []);
 
@@ -76,7 +76,7 @@ export default function Index({ params }) {
             <ArrowBack />
           </Link>
           <h1 className="mr-10 text-right text-4xl">
-            #{String(info.id).padStart(3, "0")}
+            {info.id && "#" + String(info.id).padStart(3, "0")}
           </h1>
         </div>
         <Image
@@ -186,31 +186,22 @@ export default function Index({ params }) {
                         ))}
                   </ScrollArea>
                 </TabsContent>
-                <TabsContent value="strongAgainst" className="h-[230px]">
-                  <h1>Strong Against (scroll):</h1>
-                  <ScrollArea className="h-[170px]">
-                    {info.types &&
-                      info.types
-                        .map(
-                          (type) =>
-                            strongAgainst[
-                              type.type.name[0].toUpperCase() +
-                                type.type.name.slice(1)
-                            ],
-                        )
-                        .flat()
-                        .filter((v, i, a) => a.indexOf(v) === i)
-                        .map((type) => (
-                          <p key={type}>
-                            <span
-                              className="mr-2 scroll-px-2 rounded-lg border"
-                              id={type.toLowerCase()}
-                            >
-                              {type}
-                            </span>
-                          </p>
-                        ))}
-                  </ScrollArea>
+                <TabsContent value="evolutions" className="h-[230px]">
+                  <h1>Evolutions:</h1>
+                  <div className="mt-10 flex flex-row justify-center gap-4">
+                    {info.evolutions &&
+                      info.evolutions.map((evo) => (
+                        <div className="flex flex-col items-center justify-center">
+                          <Image
+                            src={`https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(evo.id).padStart(3, "0")}.png`}
+                            alt={evo.name}
+                            width={50}
+                            height={50}
+                          />
+                          <p>{evo.name[0].toUpperCase() + evo.name.slice(1)}</p>
+                        </div>
+                      ))}
+                  </div>
                 </TabsContent>
                 <div className="">
                   <TabsList className=" border bg-gray-100">
@@ -239,10 +230,10 @@ export default function Index({ params }) {
                       Weakness
                     </TabsTrigger>
                     <TabsTrigger
-                      value="strongAgainst"
+                      value="evolutions"
                       className="data-[state=active]:bg-gray-100 data-[state=active]:shadow-lg"
                     >
-                      Strong Against
+                      Evolutions
                     </TabsTrigger>
                   </TabsList>
                 </div>
