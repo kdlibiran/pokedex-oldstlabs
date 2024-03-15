@@ -81,9 +81,19 @@ export default async function Index({ params }) {
                     <ArrowBack />
                   </Link>
                 )}
+                {info.id == 1 && (
+                  <Link href={`/pokemon/1010`}>
+                    <ArrowBack />
+                  </Link>
+                )}
                 {info.name && info.name[0].toUpperCase() + info.name.slice(1)}
                 {info.id < 1010 && (
                   <Link href={`/pokemon/${info.id + 1}`}>
+                    <ArrowForward />
+                  </Link>
+                )}
+                {info.id == 1010 && (
+                  <Link href={`/pokemon/1`}>
                     <ArrowForward />
                   </Link>
                 )}
